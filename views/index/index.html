@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TribalGroups - Find Your Tribe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-purple-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">TribalGroups</h1>
+            <div class="hidden md:flex space-x-4">
+                <a href="#" class="hover:text-purple-200">Home</a>
+                <a href="#" class="hover:text-purple-200">Find Tribes</a>
+                <a href="#" class="hover:text-purple-200">Create Tribe</a>
+                <!--<button id="loginBtn" class="bg-white text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-100">Login</button> -->
+                  <!-- Trigger Button -->
+
+
+
+                    <!-- Trigger Buttons -->
+    <button 
+    onclick="showModal('registerModal')"
+    class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-all"
+>
+    Register
+</button>
+
+<button 
+    onclick="showModal('loginModal')"
+    class="bg-white border-2 border-purple-600 text-purple-600 px-6 py-2 rounded-lg hover:bg-purple-50 transition-all"
+>
+    Login
+</button>
+
+<!-- Register Modal -->
+<div id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md relative slide-up">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Create Account</h2>
+                <button onclick="hideModal('registerModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Google OAuth Button -->
+            <button 
+                onclick="signInWithGoogle()"
+                class="w-full border border-gray-300 bg-white text-gray-700 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 mb-6"
+            >
+                <img src="/api/placeholder/20/20" alt="Google" class="w-5 h-5">
+                Continue with Google
+            </button>
+
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">Or create account with email</span>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="space-y-4">
+                <div class="input-group">
+                    <label class="block text-gray-700 mb-2">Full Name</label>
+                    <div class="relative">
+                        <i class="fas fa-user input-icon absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" class="auth-input w-full pl-10 pr-4 py-2 border rounded-lg" placeholder="Enter your name">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope input-icon absolute left-3 top-3 text-gray-400"></i>
+                        <input type="email" class="auth-input w-full pl-10 pr-4 py-2 border rounded-lg" placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock input-icon absolute left-3 top-3 text-gray-400"></i>
+                        <input type="password" class="auth-input w-full pl-10 pr-10 py-2 border rounded-lg" placeholder="Create password">
+                        <button type="button" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600" onclick="togglePassword(this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center mt-4">
+                    <input type="checkbox" id="terms" class="rounded text-purple-600">
+                    <label for="terms" class="ml-2 text-sm text-gray-600">
+                        I agree to the Terms of Service and Privacy Policy
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                    Create Account
+                </button>
+
+                <p class="text-center text-gray-600">
+                    Already have an account?
+                    <a href="#" onclick="switchModal('registerModal', 'loginModal')" class="text-purple-600 hover:text-purple-700">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md relative slide-up">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Welcome Back</h2>
+                <button onclick="hideModal('loginModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Google OAuth Button -->
+            <button 
+                onclick="signInWithGoogle()"
+                class="w-full border border-gray-300 bg-white text-gray-700 px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 mb-6"
+            >
+                <img src="/api/placeholder/20/20" alt="Google" class="w-5 h-5">
+                Sign in with Google
+            </button>
+
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">Or sign in with email</span>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-4">
+                <div class="input-group">
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope input-icon absolute left-3 top-3 text-gray-400"></i>
+                        <input type="email" class="auth-input w-full pl-10 pr-4 py-2 border rounded-lg" placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock input-icon absolute left-3 top-3 text-gray-400"></i>
+                        <input type="password" class="auth-input w-full pl-10 pr-10 py-2 border rounded-lg" placeholder="Enter password">
+                        <button type="button" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600" onclick="togglePassword(this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="rounded text-purple-600">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">
+                    Sign In
+                </button>
+
+                <p class="text-center text-gray-600">
+                    Don't have an account?
+                    <a href="#" onclick="switchModal('loginModal', 'registerModal')" class="text-purple-600 hover:text-purple-700">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal Functions
+    function showModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function switchModal(fromModalId, toModalId) {
+        hideModal(fromModalId);
+        setTimeout(() => showModal(toModalId), 100);
+    }
+
+    // Password Toggle
+    function togglePassword(button) {
+        const input = button.parentElement.querySelector('input');
+        const icon = button.querySelector('i');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Google OAuth
+    function signInWithGoogle() {
+        // Replace with your Google OAuth configuration
+        const googleConfig = {
+            client_id: '569375824085-8ucihfjcra5rh58b9rseqtsc19bbgucu.apps.googleusercontent.com',
+            redirect_uri: 'https://wwww.tribegroups.com/register',
+            scope: 'email profile',
+            response_type: 'code'
+        };
+
+        const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + 
+            new URLSearchParams(googleConfig).toString();
+
+        window.location.href = authUrl;
+    }
+
+    // Form Submissions
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const button = form.querySelector('button[type="submit"]');
+        
+        try {
+            // Show loading state
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Account...';
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Success
+            showAlert('Account created successfully!', 'success');
+            hideModal('registerModal');
+            form.reset();
+        } catch (error) {
+            showAlert('Error creating account', 'error');
+        } finally {
+            button.disabled = false;
+            button.innerHTML = 'Create Account';
+        }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const button = form.querySelector('button[type="submit"]');
+        
+        try {
+            // Show loading state
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing In...';
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Success
+            showAlert('Signed in successfully!', 'success');
+            hideModal('loginModal');
+            form.reset();
+        } catch (error) {
+            showAlert('Invalid credentials', 'error');
+        } finally {
+            button.disabled = false;
+            button.innerHTML = 'Sign In';
+        }
+    });
+
+    // Alert Function
+    function showAlert(message, type = 'success') {
+        const alert = document.createElement('div');
+        alert.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg ${
+            type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        } text-white slide-up`;
+        alert.textContent = message;
+        
+        document.body.appendChild(alert);
+        
+        setTimeout(() => {
+            alert.remove();
+        }, 5000);
+    }
+
+    // Close modals when clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal(modal.id);
+            }
+        });
+    });
+</script>
+
+
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <!-- Search Section -->
+        <section class="mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Find Your Tribe</h2>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" placeholder="Search tribes..." class="flex-grow p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                    <select class="p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                        <option value="">All Categories</option>
+                        <option value="tech">Technology</option>
+                        <option value="art">Art & Design</option>
+                        <option value="music">Music</option>
+                        <option value="sports">Sports</option>
+                        <option value="cooking">Cooking</option>
+                    </select>
+                    <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Tribes -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Featured Tribes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tribe Card 1 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="resources/images/400x200.png" alt="Tech Enthusiasts" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Tech Enthusiasts</h3>
+                        <p class="text-gray-600 mb-4">A community for tech lovers to share ideas and innovations.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">256 members</span>
+                            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                                Join Tribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tribe Card 2 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="resources/images/400x200.png" alt="Art Collective" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Art Collective</h3>
+                        <p class="text-gray-600 mb-4">Connect with fellow artists and share your creations.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">189 members</span>
+                            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                                Join Tribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tribe Card 3 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="resources/images/400x200.png" alt="Fitness Warriors" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Fitness Warriors</h3>
+                        <p class="text-gray-600 mb-4">Achieve your fitness goals with a supportive community.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">342 members</span>
+                            <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                                Join Tribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Tribe Section -->
+        <section class="mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Create Your Own Tribe</h2>
+                <form id="createTribeForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Tribe Name</label>
+                        <input type="text" class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Description</label>
+                        <textarea class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500" rows="4"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Category</label>
+                        <select class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                            <option value="tech">Technology</option>
+                            <option value="art">Art & Design</option>
+                            <option value="music">Music</option>
+                            <option value="sports">Sports</option>
+                            <option value="cooking">Cooking</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Cover Image</label>
+                        <input type="file" class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700">
+                        Create Tribe
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Popular Categories -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Popular Categories</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:bg-purple-50 cursor-pointer">
+                    <i class="fas fa-laptop-code text-4xl text-purple-600 mb-3"></i>
+                    <h3 class="font-bold">Technology</h3>
+                    <p class="text-gray-600">142 tribes</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:bg-purple-50 cursor-pointer">
+                    <i class="fas fa-palette text-4xl text-purple-600 mb-3"></i>
+                    <h3 class="font-bold">Art & Design</h3>
+                    <p class="text-gray-600">98 tribes</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:bg-purple-50 cursor-pointer">
+                    <i class="fas fa-dumbbell text-4xl text-purple-600 mb-3"></i>
+                    <h3 class="font-bold">Fitness</h3>
+                    <p class="text-gray-600">156 tribes</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:bg-purple-50 cursor-pointer">
+                    <i class="fas fa-utensils text-4xl text-purple-600 mb-3"></i>
+                    <h3 class="font-bold">Cooking</h3>
+                    <p class="text-gray-600">113 tribes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Upcoming Tribe Events</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-4 border-b">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-purple-600 font-bold">Tech Workshop</span>
+                            <span class="bg-purple-100 text-purple-600 px-2 py-1 rounded-full text-sm">Online</span>
+                        </div>
+                        <p class="text-gray-600">Learn Web Development Basics</p>
+                        <div class="mt-2 flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar mr-2"></i>
+                            <span>March 15, 2025</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50">
+                        <button class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                            Register Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-4 border-b">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-purple-600 font-bold">Art Exhibition</span>
+                            <span class="bg-green-100 text-green-600 px-2 py-1 rounded-full text-sm">In Person</span>
+                        </div>
+                        <p class="text-gray-600">Local Artists Showcase</p>
+                        <div class="mt-2 flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar mr-2"></i>
+                            <span>March 20, 2025</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50">
+                        <button class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                            RSVP Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-4 border-b">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-purple-600 font-bold">Cooking Class</span>
+                            <span class="bg-purple-100 text-purple-600 px-2 py-1 rounded-full text-sm">Hybrid</span>
+                        </div>
+                        <p class="text-gray-600">Italian Cuisine Masterclass</p>
+                        <div class="mt-2 flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar mr-2"></i>
+                            <span>March 25, 2025</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50">
+                        <button class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                            Join Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Stats -->
+        <section class="mb-8">
+            <div class="bg-purple-600 text-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Our Growing Community</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="text-4xl font-bold mb-2">500+</div>
+                        <div class="text-purple-200">Active Tribes</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">10k+</div>
+                        <div class="text-purple-200">Members</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">200+</div>
+                        <div class="text-purple-200">Events/Month</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">50+</div>
+                        <div class="text-purple-200">Countries</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Members -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Featured Members</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-lg text-center">
+                    <img src="/api/placeholder/100/100" alt="Member 1" class="w-20 h-20 rounded-full mx-auto mb-3">
+                    <h3 class="font-bold">Sarah Chen</h3>
+                    <p class="text-gray-600 text-sm">Tech Enthusiast</p>
+                    <p class="text-purple-600 text-sm mt-2">Leads 3 tribes</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-lg text-center">
+                    <img src="/api/placeholder/100/100" alt="Member 2" class="w-20 h-20 rounded-full mx-auto mb-3">
+                    <h3 class="font-bold">Mark Johnson</h3>
+                    <p class="text-gray-600 text-sm">Artist</p>
+                    <p class="text-purple-600 text-sm mt-2">Most Active Creator</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-lg text-center">
+                    <img src="/api/placeholder/100/100" alt="Member 3" class="w-20 h-20 rounded-full mx-auto mb-3">
+                    <h3 class="font-bold">Lisa Wong</h3>
+                    <p class="text-gray-600 text-sm">Fitness Coach</p>
+                    <p class="text-purple-600 text-sm mt-2">Top Contributor</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-lg text-center">
+                    <img src="/api/placeholder/100/100" alt="Member 4" class="w-20 h-20 rounded-full mx-auto mb-3">
+                    <h3 class="font-bold">James Smith</h3>
+                    <p class="text-gray-600 text-sm">Chef</p>
+                    <p class="text-purple-600 text-sm mt-2">Event Organizer</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="mb-8">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-center">Stay Updated</h2>
+                <p class="text-gray-600 text-center mb-6">Get weekly updates about new tribes and upcoming events</p>
+                <form class="max-w-md mx-auto flex gap-4">
+                    <input type="email" placeholder="Enter your email" class="flex-grow p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-4">Join TribalGroups</h2>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 mb-2">Full Name</label>
+                    <input type="text" class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" class="w-full p-2 border rounded-lg focus:outline-none focus:border-purple-500">
+                </div>
+                <button type="submit" class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700">
+                    Sign Up
+                </button>
+            </form>
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Modal handling
+        const loginBtn = document.getElementById('loginBtn');
+        const registerModal = document.getElementById('registerModal');
+        const closeModal = document.getElementById('closeModal');
+
+        loginBtn.addEventListener('click', () => {
+            registerModal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        registerModal.addEventListener('click', (e) => {
+            if (e.target === registerModal) {
+                registerModal.classList.add('hidden');
+            }
+        });
+
+        // Form submissions
+        const registerForm = document.getElementById('registerForm');
+        const createTribeForm = document.getElementById('createTribeForm');
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add registration logic here
+            alert('Registration submitted!');
+            registerModal.classList.add('hidden');
+        });
+
+        createTribeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add tribe creation logic here
+            alert('Tribe created successfully!');
+        });
+    </script>
+</body>
+</html>
